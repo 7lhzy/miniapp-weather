@@ -1,6 +1,7 @@
 package cn.edu.pku.zy.miniweather;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,6 +35,7 @@ import dalvik.annotation.TestTarget;
 public class MainActivity extends Activity implements View.OnClickListener{
     private static final int UPDATE_TODAY_WEATHER=1;
     private ImageView mUpdateBtn;
+    private ImageView mCitySelect;
     private TextView cityTv,timeTv,humidityTv,weekTv,pmDataTv,pmQualityTv,temperatureTv,climateTv,windTv,city_name_Tv;
     private ImageView weatherImg,pmImg;
     private Handler mHander=new Handler(){
@@ -61,6 +63,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
             Log.d("myWeather","网络无法连接");
             Toast.makeText(MainActivity.this,"网络无法连接",Toast.LENGTH_LONG).show();
         }
+        mCitySelect=(ImageView)findViewById(R.id.title_city_manager);
+        mCitySelect.setOnClickListener(this);
         initView();
     }
     void initView(){
@@ -89,16 +93,16 @@ public class MainActivity extends Activity implements View.OnClickListener{
         windTv.setText("N/A");
     }
     void updateTodayWeather(TodayWeather todayWeather){
-        city_name_Tv.setText(todayWeather.getCity()+"");
+        city_name_Tv.setText(todayWeather.getCity()+"天气");
         cityTv.setText((todayWeather.getCity()));
-        timeTv.setText(todayWeather.getUpdatetime()+"");
-        humidityTv.setText(":"+todayWeather.getShidu());
+        timeTv.setText(todayWeather.getUpdatetime()+"发布");
+        humidityTv.setText("湿度:"+todayWeather.getShidu());
         pmDataTv.setText(todayWeather.getPm25());
         pmQualityTv.setText(todayWeather.getQuality());
         weekTv.setText(todayWeather.getDate());
         temperatureTv.setText(todayWeather.getHigh()+"~"+todayWeather.getLow());
         climateTv.setText(todayWeather.getType());
-        windTv.setText(""+todayWeather.getFengli());
+        windTv.setText("风力"+todayWeather.getFengli());
         Toast.makeText(MainActivity.this,"更新成功",Toast.LENGTH_SHORT).show();
     }
     public TodayWeather parseXML(String xmldata){
@@ -297,6 +301,11 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
 
     public void onClick(View view){
+        if(view.getId()==R.id.title_city_manager){
+            Intent i = new Intent(this,SelectCity.class);
+            //startActivity(i);
+            startActivityForResult(i,1);
+        }
         if(view.getId()==R.id.title_update_btn){
             SharedPreferences sharedPreferences = getSharedPreferences("config",MODE_PRIVATE);
             String cityCode = sharedPreferences.getString("main_city_code","101010100");
@@ -310,6 +319,19 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 Toast.makeText(MainActivity.this, "网络无法连接", Toast.LENGTH_LONG).show();
             }
 
+        }
+    }
+    protected void onActivityResult(int requestCode,int resultCode,Intent data){
+        if(requestCode == 1&&resultCode == RESULT_OK){
+            String newCityCode=data.getStringExtra("cityCode");
+            Log.d("myWeather","选择的城市代码为"+newCityCode);
+            if(NetUtil.getNetworkState(this)!=NetUtil.NETWORK_NONE){
+                Log.d("myWeather","网络OK");
+                queryWeatherCode(newCityCode);
+            }else{
+                Log.d("myWeather","网络无法连接");
+                Toast.makeText(MainActivity.this, "网络无法连接", Toast.LENGTH_LONG).show();
+            }
         }
     }
 }
