@@ -18,10 +18,11 @@ public class MyApplication extends Application{
     private static final String TAG="MyAPP";
     private static MyApplication mApplication;
     private CityDB mCityDB;
-    private List<City> mCityList;
+    private ArrayList<City> mCityList;
+    @Override
     public void onCreate(){
         super.onCreate();
-        Log.d(TAG,"MyApplication->Oncreate");
+        Log.d(TAG,"MyApplication->onCreate");
         mApplication=this;
         mCityDB=openCityDB();
         initCityList();
@@ -56,7 +57,7 @@ public class MyApplication extends Application{
         return true;
     }
 
-    public List<City> getCityList() {
+    public ArrayList<City> getCityList() {
         return mCityList;
     }
 
@@ -79,7 +80,7 @@ public class MyApplication extends Application{
                     + File.separator+getPackageName()
                     +File.separator+"databases1"
                     +File.separator;
-            File dirFirstFolder=new File(pathfolder);
+            File dirFirstFolder = new File(pathfolder);
             if(!dirFirstFolder.exists()){
                 dirFirstFolder.mkdirs();
                 Log.i("MyApp","mkdirs");

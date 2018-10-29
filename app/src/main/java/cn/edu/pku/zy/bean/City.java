@@ -6,10 +6,8 @@ public class City {
     private String number;
     private String firstPY;
     private String allPY;
-    private String allFristPY;
-    public String getProvince() {
-        return province;
-    }
+    private String allFirstPY;
+    public String getProvince() { return province; }
 
     public void setProvince(String province) {
         this.province = province;
@@ -23,12 +21,12 @@ public class City {
         this.city = city;
     }
 
-    public String getAllFristPY() {
-        return allFristPY;
+    public String getAllFirstPY() {
+        return allFirstPY;
     }
 
-    public void setAllFristPY(String allFristPY) {
-        this.allFristPY = allFristPY;
+    public void setAllFirstPY(String allFirstPY) {
+        this.allFirstPY = allFirstPY;
     }
 
     public String getAllPY() {
@@ -63,16 +61,16 @@ public class City {
                 ", number='" + number + '\'' +
                 ", firstPY='" + firstPY + '\'' +
                 ", allPY='" + allPY + '\'' +
-                ", allFristPY='" + allFristPY + '\'' +
+                ", allFirstPY='" + allFirstPY + '\'' +
                 '}';
     }
 
-    public City(String province,String city,String number,String firstPY,String allPY,String allFristPY){
+    public City(String province,String city,String number,String firstPY,String allPY,String allFirstPY){
         this.province=province;
         this.city=city;
         this.number=number;
         this.firstPY=firstPY;
         this.allPY=allPY;
-        this.allFristPY=allFristPY;
+        this.allFirstPY=allFirstPY;
     }
 }

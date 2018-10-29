@@ -17,13 +17,13 @@ public class CityDB {
     public CityDB(Context context, String path){
         db=context.openOrCreateDatabase(path,Context.MODE_PRIVATE,null);
     }
-    public List<City> getAllCity(){
-        List<City> list=new ArrayList<City>();
+    public ArrayList<City> getAllCity(){
+        ArrayList<City> list=new ArrayList<City>();
         //Cursor c=db.rawQuery("SELECT * from "+CITY_TABLE_NAME,null);
         Cursor c = db.rawQuery("SELECT * from " + CITY_TABLE_NAME, null);
         int a=c.getCount();
         String str =c.toString();
-        while (c.moveToNext()){
+        /*while (c.moveToNext()){
             String province =c.getString(c.getColumnIndex("province"));
             String city =c.getString(c.getColumnIndex("city"));
             String number =c.getString(c.getColumnIndex("number"));
@@ -31,6 +31,16 @@ public class CityDB {
             String allFirstPY =c.getString(c.getColumnIndex("allfirstpy"));
             String firstPY =c.getString(c.getColumnIndex("firstpy"));
             City item=new City(province,city,number,firstPY,allPY,allFirstPY);
+            list.add(item);
+        }*/
+        while (c.moveToNext()) {
+            String province = c.getString(c.getColumnIndex("province"));
+            String city = c.getString(c.getColumnIndex("city"));
+            String number = c.getString(c.getColumnIndex("number"));
+            String allPY = c.getString(c.getColumnIndex("allpy"));
+            String allFirstPY = c.getString(c.getColumnIndex("allfirstpy"));
+            String firstPY = c.getString(c.getColumnIndex("firstpy"));
+            City item = new City(province, city, number, firstPY, allPY, allFirstPY);
             list.add(item);
         }
         return list;

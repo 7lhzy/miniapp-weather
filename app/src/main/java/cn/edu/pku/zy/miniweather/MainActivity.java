@@ -3,6 +3,7 @@ package cn.edu.pku.zy.miniweather;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -23,12 +24,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 
 import cn.edu.pku.zy.bean.TodayWeather;
 import cn.edu.pku.zy.util.NetUtil;
+import cn.edu.pku.zy.util.PinYin;
 import dalvik.annotation.TestTarget;
 
 
@@ -103,6 +106,46 @@ public class MainActivity extends Activity implements View.OnClickListener{
         temperatureTv.setText(todayWeather.getHigh()+"~"+todayWeather.getLow());
         climateTv.setText(todayWeather.getType());
         windTv.setText("风力"+todayWeather.getFengli());
+        int pmValue = Integer.parseInt(todayWeather.getPm25().trim());
+        String pmImgStr = "0_50";
+        if (pmValue>50 && pmValue < 201) {
+            int startV = (pmValue - 1) / 50 * 50 + 1;
+            int endV = ((pmValue - 1) / 50 + 1) * 50;
+            pmImgStr = Integer.toString(startV) + "_" + endV;
+        }
+        else if (pmValue>=201 && pmValue < 301){
+            pmImgStr= "201_300";
+        }
+        else if (pmValue >= 301) {
+            pmImgStr = "greater_300";
+        }
+
+        String typeImg  = "biz_plugin_weather_" + PinYin.converterToSpell(todayWeather.getType());
+        Class aClass = R.drawable.class;
+        int typeId = -1;
+        int pmImgId = -1;
+        try{
+            //一般尽量采用这种形式
+            Field field = aClass.getField(typeImg);
+            Object value = field.get(new Integer(0));
+            typeId = (int)value;
+
+            Field pmField = aClass.getField("biz_plugin_weather_" + pmImgStr);
+            Object pmImgO = pmField.get(new Integer(0));
+            pmImgId = (int) pmImgO;
+        }catch(Exception e){
+            //e.printStackTrace();
+             if ( -1 == typeId)
+                 typeId = R.drawable.biz_plugin_weather_qing;
+             if ( -1 == pmImgId)
+                 pmImgId= R.drawable.biz_plugin_weather_0_50;
+        }finally {
+            Drawable drawable = getResources().getDrawable(typeId);
+            weatherImg.setImageDrawable(drawable);
+            drawable = getResources().getDrawable(pmImgId);
+            pmImg.setImageDrawable(drawable);
+            Toast.makeText(MainActivity.this, "更新成功", Toast.LENGTH_SHORT).show();
+        }
         Toast.makeText(MainActivity.this,"更新成功",Toast.LENGTH_SHORT).show();
     }
     public TodayWeather parseXML(String xmldata){
@@ -322,7 +365,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         }
     }
     protected void onActivityResult(int requestCode,int resultCode,Intent data){
-        if(requestCode == 1&&resultCode == RESULT_OK){
+        if(requestCode == 1&&resultCode == 10){
             String newCityCode=data.getStringExtra("cityCode");
             Log.d("myWeather","选择的城市代码为"+newCityCode);
             if(NetUtil.getNetworkState(this)!=NetUtil.NETWORK_NONE){

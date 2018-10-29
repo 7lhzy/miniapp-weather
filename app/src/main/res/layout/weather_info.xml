@@ -166,7 +166,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:layout_marginLeft="-35dip"
                     android:src="@drawable/biz_plugin_weather_qing"/>
                 <TextView
                     android:id="@+id/week_today"
@@ -174,7 +173,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
 
-                    android:layout_marginLeft="-30dip"
+                    android:layout_marginLeft="5dip"
                     android:layout_toRightOf="@id/weather_img"
                     android:singleLine="true"
                     android:text="今天星期五"
@@ -185,18 +184,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/week_today"
-                    android:layout_marginLeft="-30dip"
+                    android:layout_marginLeft="5dip"
                     android:layout_toRightOf="@id/weather_img"
                     android:singleLine="true"
                     android:text="-2℃~7℃"
                     android:textColor="@android:color/white"
-                    android:textSize="25.0sp"/>
+                    android:textSize="30.0sp"/>
                 <TextView
                     android:id="@+id/climate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/temperature"
-                    android:layout_marginLeft="-30dip"
+                    android:layout_marginLeft="5dip"
                     android:layout_toRightOf="@id/weather_img"
                     android:singleLine="true"
                     android:text="多云转晴"
@@ -207,7 +206,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/climate"
-                    android:layout_marginLeft="-30dip"
+                    android:layout_marginLeft="5dip"
                     android:layout_toRightOf="@id/weather_img"
                     android:singleLine="true"
                     android:text="微风"
