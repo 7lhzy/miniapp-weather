@@ -17,7 +17,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:gravity="center"
-            android:text=""
+            android:text="当前城市：北京"
             android:textColor="#ffffffff"
             android:textSize="20.0dip"/>
         <ImageView
@@ -41,8 +41,15 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/title_top">
+        <SearchView
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:queryHint="搜索全国城市天气">
+        </SearchView>
         <ListView
             android:id="@+id/title_list"
+            android:layout_below="@+id/search"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         </ListView>
