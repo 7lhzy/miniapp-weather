@@ -2,6 +2,7 @@ package cn.edu.pku.zy.app;
 
 import android.app.Application;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.File;
@@ -9,16 +10,24 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 import cn.edu.pku.zy.bean.City;
 import cn.edu.pku.zy.db.CityDB;
+import cn.edu.pku.zy.miniweather.R;
 
 public class MyApplication extends Application{
     private static final String TAG="MyAPP";
     private static MyApplication mApplication;
     private CityDB mCityDB;
     private ArrayList<City> mCityList;
+    private Map<String, Integer> mWeatherIcon;
+    public Map<String, Integer> getWeatherIconMap() {
+        return mWeatherIcon;
+    }
+
+
+
     @Override
     public void onCreate(){
         super.onCreate();
@@ -104,4 +113,23 @@ public class MyApplication extends Application{
         }
         return new CityDB(this,path);
     }
+    public int getWeatherIcon(String climate) {
+        int weatherRes = R.drawable.biz_plugin_weather_qing;
+        if (TextUtils.isEmpty(climate))
+            return weatherRes;
+        String[] strs = { "晴", "晴" };
+        if (climate.contains("转")) {// 天气带转字，取前面那部分
+            strs = climate.split("转");
+            climate = strs[0];
+            if (climate.contains("到")) {// 如果转字前面那部分带到字，则取它的后部分
+                strs = climate.split("到");
+                climate = strs[1];
+            }
+        }
+        if (mWeatherIcon.containsKey(climate)) {
+            weatherRes = mWeatherIcon.get(climate);
+        }
+        return weatherRes;
+    }
+
 }
